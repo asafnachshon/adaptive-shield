@@ -1,0 +1,42 @@
+repos:
+  -   repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v3.2.0
+      hooks:
+        -   id: check-yaml
+        -   id: end-of-file-fixer
+        -   id: trailing-whitespace
+        -   id: no-commit-to-branch
+            args: [ --branch, integration, --branch, staging, --branch, master ]
+        -   id: check-merge-conflict
+        - id: debug-statements
+          language_version: python3
+        - id: detect-aws-credentials
+        - id: detect-private-key
+        - id: check-json
+        - id: check-yaml
+        - id: end-of-file-fixer
+        - id: mixed-line-ending
+        - id: trailing-whitespace
+        - id: requirements-txt-fixer
+  -   repo: local
+      hooks:
+        - id: pytest
+          name: pytest
+          stages: [ push ]
+          language: python
+          entry: coverage run --branch --source=./sugar_score_service/ -m unittest discover test -s ./tests -p *_test.py
+          verbose: true
+          pass_filenames: false
+          always_run: true
+        - id: pytest-cov
+          name: coverage
+          stages: [ push ]
+          language: python
+          entry: coverage report
+          verbose: true
+          pass_filenames: false
+          always_run: true
+  -   repo: https://github.com/psf/black
+      rev: 22.3.0
+      hooks:
+        -   id: black

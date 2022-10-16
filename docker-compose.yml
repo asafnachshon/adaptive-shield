@@ -1,0 +1,18 @@
+version: '3'
+services:
+  adaptive_shield:
+    build: .
+    stdin_open: true
+    tty: true
+    volumes:
+      - /tmp:/tmp
+    environment:
+      - ADDRESS=0.0.0.0
+      - PORT=8083
+      - THREADS=1
+      - WIKIPEDIA_HOST=https://en.wikipedia.org
+      - LOCAL_IMAGE_DIRECTORY=/tmp
+      - LOCAL_COLLATERAL_ADJECTIVE_JSON=/tmp/animals_by_collateral_adjective.json
+      - LOCAL_JSON_DIRECTORY=/tmp
+    ports:
+      - "8083:8083"
