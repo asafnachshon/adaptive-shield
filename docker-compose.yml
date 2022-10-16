@@ -12,7 +12,6 @@ services:
       - THREADS=1
       - WIKIPEDIA_HOST=https://en.wikipedia.org
       - LOCAL_IMAGE_DIRECTORY=/tmp
-      - LOCAL_COLLATERAL_ADJECTIVE_JSON=/tmp/animals_by_collateral_adjective.json
-      - LOCAL_JSON_DIRECTORY=/tmp
+      - LOCAL_COLLATERAL_ADJECTIVE_HTML=/tmp/animals_by_collateral_adjective.html
     ports:
       - "8083:8083"

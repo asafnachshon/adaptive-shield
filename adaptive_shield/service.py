@@ -3,6 +3,7 @@ import tornado.web
 
 from adaptive_shield.controllers import Alive, CollateralAdjective, Ready
 from adaptive_shield.scrapers import animals_by_collateral_adjective
+from concurrent.futures import ProcessPoolExecutor
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 from tornado.web import url
@@ -29,7 +30,9 @@ __all__ = ["Service"]
 
 def main():
     # run scrapers
-    animals_by_collateral_adjective()
+    executor = ProcessPoolExecutor()
+    executor.submit(animals_by_collateral_adjective)
+    executor.shutdown()
 
     # start app
     app = Service()

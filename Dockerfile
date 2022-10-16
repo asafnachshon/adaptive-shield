@@ -1,6 +1,6 @@
 FROM python:3.9.10
 
-RUN python -m pip install --upgrade pip
+RUN python -m pip install --upgrade pip==22.3
 
 COPY adaptive_shield /home/adaptive_shield
 COPY setup.py /home/

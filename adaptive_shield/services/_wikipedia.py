@@ -3,14 +3,19 @@ from adaptive_shield.utils import http_get
 from bson import json_util
 
 
+PARAMS = {
+    "action": "query",
+    "format": "json",
+    "formatversion": 2,
+    "prop": "pageimages|pageterms",
+    "piprop": "original",
+}
+
+
 def get_main_page_image_url(title):
-    url = f"https://en.wikipedia.org/w/api.php"
+    url = f"{os.getenv('WIKIPEDIA_HOST')}/w/api.php"
     params = {
-        "action": "query",
-        "format": "json",
-        "formatversion": 2,
-        "prop": "pageimages|pageterms",
-        "piprop": "original",
+        **PARAMS,
         "titles": title,
     }
     response = http_get(url=url, params=params)

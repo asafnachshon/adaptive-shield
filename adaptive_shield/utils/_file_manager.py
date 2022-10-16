@@ -2,8 +2,6 @@ import os
 import shutil
 import requests
 
-from bson import json_util
-
 
 def download_file(url, local_directory):
     stream = requests.get(url=url, stream=True)
@@ -13,14 +11,23 @@ def download_file(url, local_directory):
     return local_path
 
 
-def load_json_file(file_path):
-    with open(file_path, "r") as json_file:
-        return json_util.loads(json_file.read())
+def load_data_from_file(file_path):
+    try:
+        with open(file_path, "r") as file_:
+            return file_.read()
+    except FileNotFoundError:
+        raise Exception(f"{file_path} does not exist")
+    except IsADirectoryError:
+        raise Exception(f"{file_path} is not a file")
 
 
-def save_json_file(json_data, file_path):
-    with open(file_path, "w") as json_file:
-        json_file.write(json_util.dumps(json_data))
+def save_data_to_file(data, file_path):
+    # create path to file if it doesn't exist
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+    # save data to file path
+    with open(file_path, "w") as file_:
+        file_.write(data)
 
 
-__all__ = ["download_file", "load_json_file", "save_json_file"]
+__all__ = ["download_file", "load_data_from_file", "save_data_to_file"]
