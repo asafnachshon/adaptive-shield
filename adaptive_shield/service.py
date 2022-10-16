@@ -32,7 +32,7 @@ def main():
     # run scrapers
     executor = ProcessPoolExecutor()
     executor.submit(animals_by_collateral_adjective)
-    executor.shutdown()
+    # executor.shutdown()
 
     # start app
     app = Service()
