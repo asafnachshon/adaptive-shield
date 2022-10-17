@@ -14,7 +14,11 @@ class TestApiApplication(tornado.web.Application):
         tornado.web.Application.__init__(
             self,
             handlers=[
-                tornado.web.url(pattern=CollateralAdjective.pattern, handler=CollateralAdjective, kwargs=kwargs),
+                tornado.web.url(
+                    pattern=CollateralAdjective.pattern,
+                    handler=CollateralAdjective,
+                    kwargs=kwargs,
+                ),
             ],
             debug=False,
             autoreload=False,
@@ -32,8 +36,7 @@ def tearDownModule():
 @patch("adaptive_shield.controllers._collateral_adjective.load_data_from_file")
 class CollateralAdjectiveTest(tornado.testing.AsyncHTTPTestCase):
     local_collateral_adjective_html = "/path/to/file.html"
-    mock_environment_variables = patch.dict(
-        os.environ)
+    mock_environment_variables = patch.dict(os.environ)
 
     def tearDown(self):
         self.mock_environment_variables.stop()
@@ -53,7 +56,8 @@ class CollateralAdjectiveTest(tornado.testing.AsyncHTTPTestCase):
         resp = self.fetch(
             path="/animals/collateral-adjective",
             method="GET",
-            allow_nonstandard_methods=True)
+            allow_nonstandard_methods=True,
+        )
 
         self.assertEqual(HTTPStatus.OK, resp.code)
 
@@ -61,14 +65,18 @@ class CollateralAdjectiveTest(tornado.testing.AsyncHTTPTestCase):
         self.assertIsInstance(response, str)
         self.assertEqual(mock_data_from_html_file, response)
 
-        load_data_from_file.assert_called_once_with(file_path=self.local_collateral_adjective_html)
+        load_data_from_file.assert_called_once_with(
+            file_path=self.local_collateral_adjective_html
+        )
 
     def test_loading_data_from_file_missing_file_error(self, load_data_from_file):
         self.mock_environment_variables.values = {
             "LOCAL_COLLATERAL_ADJECTIVE_HTML": self.local_collateral_adjective_html,
         }
         self.mock_environment_variables.start()
-        load_data_from_file.side_effect = LoadDataMissingFileError(path=self.local_collateral_adjective_html)
+        load_data_from_file.side_effect = LoadDataMissingFileError(
+            path=self.local_collateral_adjective_html
+        )
 
         resp = self.fetch(
             path="/animals/collateral-adjective",
@@ -80,9 +88,14 @@ class CollateralAdjectiveTest(tornado.testing.AsyncHTTPTestCase):
 
         response = resp.body.decode("utf-8")
         self.assertIsInstance(response, str)
-        self.assertEqual("collateral adjective data processing is still in progress, try again later", response)
+        self.assertEqual(
+            "collateral adjective data processing is still in progress, try again later",
+            response,
+        )
 
-        load_data_from_file.assert_called_once_with(file_path=self.local_collateral_adjective_html)
+        load_data_from_file.assert_called_once_with(
+            file_path=self.local_collateral_adjective_html
+        )
 
     def test_error_loading_data_from_file(self, load_data_from_file):
         load_data_from_file.side_effect = LoadDataFromFileError(error="mock error")

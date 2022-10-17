@@ -24,7 +24,9 @@ class CollateralAdjective(MainHandler, metaclass=ABCMeta):
         # status code will be 400, but the API will return a massage saying the user should try again later.
         except LoadDataMissingFileError:
             self.set_status(self.http_status.NOT_FOUND)
-            await self.finish(chunk="collateral adjective data processing is still in progress, try again later")
+            await self.finish(
+                chunk="collateral adjective data processing is still in progress, try again later"
+            )
 
         # if local var 'LOCAL_COLLATERAL_ADJECTIVE_HTML' doesn't exist (None), or the value is not a path to a file (a
         # directory).
