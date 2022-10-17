@@ -1,7 +1,7 @@
 import os
 import tornado.web
 
-from adaptive_shield.controllers import Alive, CollateralAdjective, Ready
+from adaptive_shield.controllers import Alive, CollateralAdjective
 from adaptive_shield.scrapers import animals_by_collateral_adjective
 from concurrent.futures import ProcessPoolExecutor
 from tornado.httpserver import HTTPServer
@@ -18,7 +18,6 @@ class Service(tornado.web.Application):
                 handler=CollateralAdjective,
                 kwargs={},
             ),
-            url(pattern=Ready.pattern, handler=Ready, kwargs={}),
         ]
         tornado.web.Application.__init__(
             self, handlers=handlers, debug=False, autoreload=False
